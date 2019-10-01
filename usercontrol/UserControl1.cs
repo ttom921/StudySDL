@@ -63,7 +63,7 @@ namespace usercontrol
             // This is what we're going to attach the SDL2 window to
             gamePanel = new Panel();
             gamePanel.Size = new Size(640, 480);
-            gamePanel.Location = new Point(80, 10);
+            gamePanel.Location = new Point(0, 0);
             gamePanel.BackColor = Color.Pink;
             gamePanel.Visible = true;
            
@@ -150,6 +150,9 @@ namespace usercontrol
 
         private void ClickedButton(object sender, EventArgs e)
         {
+            byte r =(byte) random.Next(0, 255);
+            byte g = (byte)random.Next(0, 255);
+            byte b = (byte)random.Next(0, 255);
             //glClearColor(
             //    (float)random.NextDouble(),
             //    (float)random.NextDouble(),
@@ -158,7 +161,7 @@ namespace usercontrol
             //);
             //glClear(0x4000); // GL_COLOR_BUFFER_BIT
             //SDL.SDL_GL_SwapWindow(gameWindow);
-            SDL.SDL_SetRenderDrawColor(renderer, 255, 0, 0, 128);
+            SDL.SDL_SetRenderDrawColor(renderer, r, g, b, 255);
 
             // Clear the screen.
             SDL.SDL_RenderClear(renderer);

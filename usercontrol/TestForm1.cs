@@ -20,7 +20,10 @@ namespace usercontrol
         private void TestForm1_Load(object sender, EventArgs e)
         {
             UserControl1 myuc = new UserControl1();
+            myuc.Width = 640;
+            myuc.Height = 480;
             this.Controls.Add(myuc);
+            
         }
     }
 }
