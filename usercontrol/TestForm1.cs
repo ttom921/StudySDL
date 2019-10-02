@@ -12,6 +12,7 @@ namespace usercontrol
 {
     public partial class TestForm1 : Form
     {
+        UserControl1 myuc = null;
         public TestForm1()
         {
             InitializeComponent();
@@ -19,11 +20,19 @@ namespace usercontrol
 
         private void TestForm1_Load(object sender, EventArgs e)
         {
-            UserControl1 myuc = new UserControl1();
+            myuc = new UserControl1();
             myuc.Width = 640;
             myuc.Height = 480;
             this.Controls.Add(myuc);
             
+        }
+
+        private void TestForm1_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            if (myuc != null)
+            {
+                myuc.WindowClosing(sender, e);
+            }
         }
     }
 }

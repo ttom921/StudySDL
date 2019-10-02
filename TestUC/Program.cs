@@ -17,8 +17,8 @@ namespace TestUC
         {
             //Application.EnableVisualStyles();
             //Application.SetCompatibleTextRenderingDefault(false);
-            //Application.Run(new SKForm());
             Application.Run(new TestForm1());
+            //Application.Run(new HSUCLib.TestUSUCForm());
 
         }
     }

@@ -23,19 +23,11 @@ namespace usercontrol
         private IntPtr gameWindow; // For FNA, this is Game.Window.Handle
 
         #endregion
-        #region Private GL Variables
-        //The surface contained by the window
-        IntPtr screenSurface;
+        #region Private Variables
 
         // IGNORE MEEEEE
         private Random random;
         private IntPtr renderer;
-        private delegate void Viewport(int x, int y, int width, int height);
-        private delegate void ClearColor(float r, float g, float b, float a);
-        private delegate void Clear(uint flags);
-        private Viewport glViewport;
-        private ClearColor glClearColor;
-        private Clear glClear;
 
         #endregion
         #region WinAPI Entry Points
@@ -85,16 +77,7 @@ namespace usercontrol
             random = new Random();
             SDL.SDL_Init(SDL.SDL_INIT_VIDEO);
             gameWindow=SDL.SDL_CreateWindowFrom(this.gamePanel.Handle);
-            //gameWindow = SDL.SDL_CreateWindow(
-            //    String.Empty,
-            //    0,
-            //    0,
-            //    gamePanel.Size.Width,
-            //    gamePanel.Size.Height,
-            //    SDL.SDL_WindowFlags.SDL_WINDOW_BORDERLESS | SDL.SDL_WindowFlags.SDL_WINDOW_OPENGL
-            //);
-            //Get window surface
-            //screenSurface = SDL.SDL_GetWindowSurface(gameWindow);
+
             renderer = SDL.SDL_CreateRenderer(gameWindow, -1, 0);
             // Set renderer drawing color.
             SDL.SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
@@ -107,44 +90,6 @@ namespace usercontrol
             // Present the "Painting" (backbuffer) to the screen. Call this once per frame.
             SDL.SDL_RenderPresent(renderer);
 
-            //glContext = SDL.SDL_GL_CreateContext(gameWindow);
-            //glViewport = (Viewport)Marshal.GetDelegateForFunctionPointer(
-            //    SDL.SDL_GL_GetProcAddress("glViewport"),
-            //    typeof(Viewport)
-            //);
-            //glClearColor = (ClearColor)Marshal.GetDelegateForFunctionPointer(
-            //    SDL.SDL_GL_GetProcAddress("glClearColor"),
-            //    typeof(ClearColor)
-            //);
-            //glClear = (Clear)Marshal.GetDelegateForFunctionPointer(
-            //    SDL.SDL_GL_GetProcAddress("glClear"),
-            //    typeof(Clear)
-            //);
-            //glViewport(0, 0, gamePanel.Size.Width, gamePanel.Size.Height);
-            //glClearColor(1.0f, 0.0f, 0.0f, 1.0f);
-            //glClear(0x4000);
-            //SDL.SDL_GL_SwapWindow(gameWindow);
-
-            //// Get the Win32 HWND from the SDL2 window
-            //SDL.SDL_SysWMinfo info = new SDL.SDL_SysWMinfo();
-            //SDL.SDL_GetWindowWMInfo(gameWindow, ref info);
-            //IntPtr winHandle = info.info.win.window;
-
-            //// Move the SDL2 window to 0, 0
-            //SetWindowPos(
-            //    winHandle,
-            //    Handle,
-            //    0,
-            //    0,
-            //    0,
-            //    0,
-            //    0x0401 // NOSIZE | SHOWWINDOW
-            //);
-
-            //// Attach the SDL2 window to the panel
-            //SetParent(winHandle, gamePanel.Handle);
-            //ShowWindow(winHandle, 1); // SHOWNORMAL
-
         }
         #region Button Event Method
 
@@ -153,14 +98,7 @@ namespace usercontrol
             byte r =(byte) random.Next(0, 255);
             byte g = (byte)random.Next(0, 255);
             byte b = (byte)random.Next(0, 255);
-            //glClearColor(
-            //    (float)random.NextDouble(),
-            //    (float)random.NextDouble(),
-            //    (float)random.NextDouble(),
-            //    1.0f
-            //);
-            //glClear(0x4000); // GL_COLOR_BUFFER_BIT
-            //SDL.SDL_GL_SwapWindow(gameWindow);
+
             SDL.SDL_SetRenderDrawColor(renderer, r, g, b, 255);
 
             // Clear the screen.
@@ -174,13 +112,8 @@ namespace usercontrol
 
         #region Window Close Method
 
-        private void WindowClosing(object sender, FormClosingEventArgs e)
+        public void WindowClosing(object sender, FormClosingEventArgs e)
         {
-            glClear = null;
-            glClearColor = null;
-            glViewport = null;
-            //SDL.SDL_GL_DeleteContext(glContext);
-            //glContext = IntPtr.Zero;
             SDL.SDL_DestroyWindow(gameWindow);
             gameWindow = IntPtr.Zero;
             SDL.SDL_Quit();
