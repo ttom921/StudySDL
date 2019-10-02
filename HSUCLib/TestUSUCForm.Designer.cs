@@ -46,6 +46,7 @@
             this.Controls.Add(this.hsucax1);
             this.Name = "TestUSUCForm";
             this.Text = "TestUSUCForm";
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.TestUSUCForm_FormClosing);
             this.ResumeLayout(false);
 
         }

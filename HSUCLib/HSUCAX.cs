@@ -15,33 +15,27 @@ namespace HSUCLib
     
     public partial class HSUCAX: UserControl
     {
-        delegate void MeDelegatePara(int a, int b);
 
         Thread showImageThread = null;
         bool isRunningShowImageThread = false;
 
         private IntPtr renderer;
-        private IntPtr gameWindow; // For FNA, this is Game.Window.Handle
+        private IntPtr gameWindow; //this is Game.Window.Handle
         private Random random;
         private static object _thisLock = new object();
-        MeDelegatePara mydel;
+
         public HSUCAX()
         {
             InitializeComponent();
             try
             {
-                //drawSDL = new DrawSDL();
-                ////drawSDL.Open(this.Handle, DrawSDL.PIXEL_FMT_COLOR.PIXEL_YUV420P);
-                //drawSDL.Open(this.Handle);
-                //this.ResumeLayout();
-
                 initsdl();
             }
             catch (Exception ex)
             {
             }
         }
-
+        //初始化SDL
         private void initsdl()
         {
             random = new Random();
@@ -58,15 +52,10 @@ namespace HSUCLib
 
             // Present the "Painting" (backbuffer) to the screen. Call this once per frame.
             SDL.SDL_RenderPresent(renderer);
-            mydel= new MeDelegatePara(InstanceMethod);
         }
 
         private void btnStart_Click(object sender, EventArgs e)
         {
-            //byte r = (byte)random.Next(0, 255);
-            //byte g = (byte)random.Next(0, 255);
-            //byte b = (byte)random.Next(0, 255);
-            //mydel(r, b);
             if (showImageThread == null)
             {
                 SDL.SDL_RenderClear(renderer);
@@ -78,19 +67,7 @@ namespace HSUCLib
                 showImageThread.Priority = ThreadPriority.AboveNormal;
                 showImageThread.IsBackground = true;
                 showImageThread.Start();
-
-
-               
             }
-            
-            //else
-            //{
-            //    SDL.SDL_RenderClear(renderer);
-
-            //    //// Present the "Painting" (backbuffer) to the screen. Call this once per frame.
-            //    SDL.SDL_RenderPresent(renderer);
-            //}
-            
         }
         void ShowImageTask()
         {
@@ -106,10 +83,9 @@ namespace HSUCLib
                     {
                        
                         SDL.SDL_SetRenderDrawColor(renderer, r, g, b, 255);
-                        ////SDL.SDL_SetRenderDrawColor(renderer, 255, 255, 0, 255);
+
                         //// Clear the screen.
                         SDL.SDL_RenderClear(renderer);
-
                         ////// Present the "Painting" (backbuffer) to the screen. Call this once per frame.
                         SDL.SDL_RenderPresent(renderer);
                     }
@@ -141,20 +117,24 @@ namespace HSUCLib
             }
         }
 
-        
+        #region Window Close Method
 
-        public void InstanceMethod(int a, int b)
+        public void WindowClosing(object sender, FormClosingEventArgs e)
         {
-            Console.WriteLine("Call InstanceMethod ");
-            //SDL.SDL_SetRenderDrawColor(renderer, (byte)a, (byte)b, 128, 255);
-            //// Clear the screen.
-            //SDL.SDL_RenderClear(renderer);
-
-            //// Present the "Painting" (backbuffer) to the screen. Call this once per frame.
-            //SDL.SDL_RenderPresent(renderer);
-            
-            //return 0;
+            if (showImageThread != null && showImageThread.IsAlive)
+            {
+                showImageThread.Abort();
+                showImageThread.Join();
+                showImageThread = null;
+            }
+            SDL.SDL_DestroyWindow(gameWindow);
+            gameWindow = IntPtr.Zero;
+            SDL.SDL_Quit();
         }
+
+        #endregion
+
+
     }
-    
+
 }

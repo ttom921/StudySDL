@@ -16,5 +16,10 @@ namespace HSUCLib
         {
             InitializeComponent();
         }
+
+        private void TestUSUCForm_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            hsucax1.WindowClosing(sender, e);
+        }
     }
 }
